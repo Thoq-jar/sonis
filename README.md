@@ -10,7 +10,7 @@ Open-source lossless streaming audio server
 > [!IMPORTANT]
 > [Go](https://go.dev/) must be installed on your system.
 > 
-> [Docker]("https://docker.com") is recommended but not required if you build using go toolchain
+> [Docker](https://docker.com) is recommended but not required if you build using go toolchain
 
 - Begin by creating a `music` directory in the root of the project.
 
