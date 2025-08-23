@@ -1,0 +1,16 @@
+:root {
+    --bg: #000000;
+    --panel: #101010;
+    --panel-2: #121212;
+    --text: #e6e6e6;
+    --muted: #b3b3b3;
+    --accent: #7232bf;
+    --accent-2: #6f29d8;
+    --accent-translucent: #482e70;
+    --accent-2-translucent: rgba(95, 38, 179, 0.34);
+    --border: #292929;
+
+    --radius-circle: 50%;
+    --radius-panel: 20px;
+    --radius-track: 100px;
+}
