@@ -286,6 +286,7 @@ body {
     gap: 8px;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .play-btn {
@@ -324,6 +325,7 @@ body {
     background: var(--border);
     outline: none;
     accent-color: var(--accent);
+    touch-action: none;
 }
 
 .seek::-webkit-slider-runnable-track,
@@ -371,6 +373,7 @@ body {
 
 .controls .seek {
     max-width: 520px;
+    min-width: 200px;
 }
 
 .seek {
@@ -381,6 +384,7 @@ body {
     justify-self: end;
     display: flex;
     align-items: center;
+    min-width: 100px;
 }
 
 a,
@@ -398,4 +402,112 @@ button {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+@media (max-width: 768px) {
+    #app {
+        grid-template-rows: 1fr 90px;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .layout {
+        overflow: auto;
+        padding-bottom: 90px;
+    }
+
+    .player {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: #000;
+        border-top: 1px solid var(--border);
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: auto auto;
+        gap: 8px;
+        padding: 8px 12px;
+    }
+
+    .volume {
+        grid-column: 1 / -1;
+        justify-self: center;
+    }
+}
+
+@media (max-width: 768px) {
+    html, body {
+        height: auto;
+        min-height: 100dvh;
+        overflow: auto;
+        overscroll-behavior: contain;
+    }
+
+    #app {
+        display: block;
+        height: auto;
+    }
+
+    .layout {
+        overflow: visible;
+        padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        gap: 8px;
+    }
+
+    .sidebar,
+    .header {
+        position: static;
+    }
+
+    .main {
+        overflow: visible;
+        display: grid;
+        gap: 12px;
+        grid-template-columns: 1fr;
+    }
+
+    .player {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 8px;
+        padding: 8px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+        box-sizing: border-box;
+    }
+
+    .now-playing {
+        grid-column: 1 / -1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .controls {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .controls .seek {
+        min-width: 0;
+        max-width: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .volume {
+        display: none;
+    }
 }
