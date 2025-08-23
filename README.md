@@ -9,12 +9,19 @@ Open-source lossless streaming audio server
 ## Setup
 > [!IMPORTANT]
 > [Go](https://go.dev/) must be installed on your system.
+> [Docker]("https://docker.com") is recommended but not required if you build using go toolchain
 
-1. Create a `music` directory in the root of the project.
-2. Run `go build .` to build the server.
-3. Run `./sonis` to start the server.
-4. Open `http://localhost:8080` in your browser.
-5. Select a track and enjoy!
+- Begin by creating a `music` directory in the root of the project.
+
+- With Docker (recommended):
+    - Start Sonis using `docker-compose up`
+
+- With Go toolchain
+    - Run `go build .` to build the server.
+    - Run `./sonis` to start the server.
+
+- Open `http://localhost:8080` in your browser.
+- Select a track and enjoy!
 
 ## License
 > © 2025 [Thoq](https://thoq.dev)
