@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Sonis</title>
-    <meta name="description" content="Lossless streaming server and player"/>
+    <meta name="description" content="Lossless streaming server and player" />
 
-    <link rel="stylesheet" href="css/layout.css"/>
+    <link rel="stylesheet" href="css/layout.css" />
 
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-            integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://unpkg.com/svelte@3.59.2/compiler.js"></script>
     <script type="importmap">
@@ -26,42 +23,44 @@
         }
     </script>
 </head>
+
 <body>
-<div id="app"></div>
+    <div id="app"></div>
 
-<script type="module">
-    async function waitForCompiler() {
-        for(let i = 0; i < 200; i++) {
-            if(window.svelte && window.svelte.compile) return;
-            await new Promise(r => setTimeout(r, 25));
+    <script type="module">
+        async function waitForCompiler() {
+            for (let i = 0; i < 200; i++) {
+                if (window.svelte && window.svelte.compile) return;
+                await new Promise(r => setTimeout(r, 25));
+            }
+
+            throw new Error('Svelte compiler failed to load');
         }
 
-        throw new Error('Svelte compiler failed to load');
-    }
+        async function boot() {
+            await waitForCompiler();
+            const res = await fetch('/svelte/App.svelte');
+            const src = await res.text();
+            const compiled = window.svelte.compile(src, { generate: 'dom', css: true, name: 'App' });
 
-    async function boot() {
-        await waitForCompiler();
-        const res = await fetch('/svelte/App.svelte');
-        const src = await res.text();
-        const compiled = window.svelte.compile(src, {generate: 'dom', css: true, name: 'App'});
+            if (compiled.css && compiled.css.code) {
+                const style = document.createElement('style');
 
-        if(compiled.css && compiled.css.code) {
-            const style = document.createElement('style');
+                style.textContent = compiled.css.code;
 
-            style.textContent = compiled.css.code;
+                document.head.appendChild(style);
+            }
 
-            document.head.appendChild(style);
+            const blob = new Blob([compiled.js.code + '\n//# sourceURL=App.generated.js'], { type: 'application/javascript' });
+            const url = URL.createObjectURL(blob);
+            const mod = await import(url);
+            const App = mod.default;
+
+            new App({ target: document.getElementById('app') });
         }
 
-        const blob = new Blob([compiled.js.code + '\n//# sourceURL=App.generated.js'], {type: 'application/javascript'});
-        const url = URL.createObjectURL(blob);
-        const mod = await import(url);
-        const App = mod.default;
-
-        new App({target: document.getElementById('app')});
-    }
-
-    boot();
-</script>
+        boot();
+    </script>
 </body>
+
 </html>
